@@ -29,10 +29,10 @@ git clone https://github.com/Kamil201/Newsletter-sign-up-form-with-success-messa
 cd Newsletter-sign-up-form-with-success-message
 ```
 
-3. Install dependencies
+3. Open your index.html file in your web browser:
 
 ```bash
-npm install
+google chrome index.html
 ```
  
 ## 🤔 Solutions provided in the project
