@@ -1,7 +1,4 @@
 # My-Frontend-Mentor-Challenges
-
-# Moje Projekty Frontend Mentor
-
 Repozytorium zawiera moje rozwiązania do projektów ze strony Frontend Mentor. Frontend Mentor to platforma oferująca zadania do praktyki umiejętności front-endowych poprzez budowanie rzeczywistych projektów.
 
 ## Projekty
