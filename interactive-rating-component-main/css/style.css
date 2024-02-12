@@ -101,7 +101,7 @@ body {
 	padding: 20px;
 	background-color: var(--Dark-Blue);
 	border-radius: 10px;
-	/* display: none; */
+	display: none;
 }
 
 .rating__result {
