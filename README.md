@@ -1,7 +1,7 @@
 # My-Frontend-Mentor-Challenges
 This repository contains my solutions to projects from the Frontend Mentor website during my whole learning path. Frontend Mentor is a platform that provides tasks for practicing front-end skills by building real-world projects.
 
-## Technologie
+## Technologies
 
 In my projects, I use various technologies such as:
 <br><br>
