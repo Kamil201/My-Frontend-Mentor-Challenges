@@ -1,3 +1,14 @@
+
+
+
+const renderFormElements = () => {
+    const form = document.createElement('form')
+    form.className = "card__form";
+    form.setAttribute('action', '#')
+    return form
+}
+
+
 const createImageElement = (src, alt, className) => {
 	const img = document.createElement("img");
 	img.setAttribute('src', src);
@@ -75,8 +86,9 @@ const renderApp = () => {
 	const container = document.createElement("div");
 	container.className = "card__content";
 	const header = renderHeaderElements();
-
+    const form = renderFormElements()
 	container.appendChild(header);
+	container.appendChild(form);
 
 	return container;
 };
