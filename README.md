@@ -1,5 +1,5 @@
 # My-Frontend-Mentor-Challenges
-Repozytorium zawiera moje rozwiązania do projektów ze strony Frontend Mentor. Frontend Mentor to platforma oferująca zadania do praktyki umiejętności front-endowych poprzez budowanie rzeczywistych projektów.
+This repository contains my solutions to projects from the Frontend Mentor website during my whole learning path. Frontend Mentor is a platform that provides tasks for practicing front-end skills by building real-world projects.
 
 ## Projekty
 
@@ -9,12 +9,14 @@ Repozytorium zawiera moje rozwiązania do projektów ze strony Frontend Mentor. 
 
 ## Technologie
 
-W moich projektach korzystam z różnych technologii, takich jak:
-
-- HTML
-- CSS
-- JavaScript
-- (Dodaj inne technologie używane w Twoich projektach)
+In my projects, I use various technologies such as:
+![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
+![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
+![React Native](https://img.shields.io/badge/react_native-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
+![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![SASS](https://img.shields.io/badge/SASS-hotpink.svg?style=for-the-badge&logo=SASS&logoColor=white)
 
 ## Jak Uruchomić Projekt
 
