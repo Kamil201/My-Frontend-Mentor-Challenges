@@ -1,6 +1,13 @@
 # My-Frontend-Mentor-Challenges
 This repository contains my solutions to projects from the Frontend Mentor website during my whole learning path. Frontend Mentor is a platform that provides tasks for practicing front-end skills by building real-world projects.
 
+## 🎓 Education 
+
+![MDN Web Docs](https://img.shields.io/badge/MDN_Web_Docs-black?style=for-the-badge&logo=mdnwebdocs&logoColor=white)
+![FreeCodeCamp](https://img.shields.io/badge/Freecodecamp-%23123.svg?&style=for-the-badge&logo=freecodecamp&logoColor=green)
+![Udemy](https://img.shields.io/badge/Udemy-A435F0?style=for-the-badge&logo=Udemy&logoColor=white)
+<br>
+
 ## Projekty
 
 - [Nazwa Projektu 1](link_do_projektu_1) - Krótki opis projektu.
