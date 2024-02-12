@@ -179,6 +179,12 @@ const handleSubmitClick = () => {
 		ratingContainerEl.style.display = "none";
 		popupEl.style.display = "block";
 	}
+
+	 setTimeout(() => {
+      ratingContainerEl.style.display = "block";
+      popupEl.style.display = "none";
+    }, 5000);
+  
 };
 
 
