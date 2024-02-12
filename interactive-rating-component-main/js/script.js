@@ -62,7 +62,7 @@ const renderPopupContainer = () => {
 	return container;
 };
 
-// tu dodaj listeneraa !!!
+
 const renderSubmitButton = (text) => {
 	const button = document.createElement("button");
 	button.className = "rating__submit-btn";
@@ -129,14 +129,17 @@ const renderApp = () => {
 	const buttonList = renderButtonsContainer();
 	const submitButtonEl = renderSubmitButton("Submit");
 
-	const popupEl = renderPopupContainer();
 	container.appendChild(spanEl);
 	container.appendChild(headerEl);
 	container.appendChild(pEl);
 	container.appendChild(buttonList);
 	container.appendChild(submitButtonEl);
-	container.appendChild(popupEl);
+	
 
+	document.body.appendChild(container); 
+
+	const popupEl = renderPopupContainer();
+	document.body.appendChild(popupEl);
 	return container;
 };
 
@@ -151,3 +154,33 @@ const init = (selector) => {
 };
 
 init(".rating__container");
+
+
+
+
+const buttonList = document.querySelectorAll(".rating__btn");
+
+const selectedNumberEl = document.querySelector(".rating__number");
+const submitBtnEl = document.querySelector(".rating__submit-btn");
+const popupEl = document.querySelector(".rating__popup");
+const ratingContainerEl = document.querySelector(".rating__container");
+
+
+const handleRate = (e) => {
+	const btn = e.target;
+	const rating = parseInt(btn.getAttribute("data-rating"));
+
+	selectedNumberEl.innerText = rating;
+};
+
+
+const handleSubmitClick = () => {
+	if (selectedNumberEl.textContent !== "0") {
+		ratingContainerEl.style.display = "none";
+		popupEl.style.display = "block";
+	}
+};
+
+
+buttonList.forEach((btn) => btn.addEventListener("click", handleRate));
+submitBtnEl.addEventListener("click", handleSubmitClick);
