@@ -1,18 +1,20 @@
+// Funkcja pomocnicza do tworzenia elementu z atrybutami i dziećmi
 const createElement = (tagName, attributes = {}, children = []) => {
-	const tag = document.createElement(tagName);
+	const element = document.createElement(tagName);
 
 	for (const [key, value] of Object.entries(attributes)) {
-	
-		tag.setAttribute(key, value);
+		element.setAttribute(key, value);
 	}
 
-	children.forEach((child) => tag.appendChild(child));
-	return tag;
+	children.forEach((child) => element.appendChild(child));
+
+	return element;
 };
 
-const createInput = (tagName, className, placeholder, maxLength) => {
+// Funkcje do tworzenia konkretnych elementów
+const createInput = (type, className, placeholder, maxLength) => {
 	return createElement("input", {
-	tagName,
+		type,
 		class: className,
 		placeholder,
 		maxlength: maxLength,
@@ -20,7 +22,9 @@ const createInput = (tagName, className, placeholder, maxLength) => {
 };
 
 const createLabel = (forAttribute, text) => {
-	return createElement("label", { for: forAttribute }, [document.createTextNode(text),]);
+	return createElement("label", { for: forAttribute }, [
+		document.createTextNode(text),
+	]);
 };
 
 const createDiv = (className, children = []) => {
@@ -42,7 +46,7 @@ const renderFormElements = () => {
 
 	const cardHolderDiv = createDiv("card__holder", [
 		createLabel("CardholderName", "Cardholder Name"),
-		createInput("text", "card__input", "e.g. Jane Appleseed"),
+		createInput("text", "card__input card__input--name", "e.g. Jane Appleseed"),
 		createErrorMessage("error", "card__error-message"),
 	]);
 
@@ -153,4 +157,46 @@ const init = (containerSelector) => {
 	container.appendChild(renderApp());
 };
 
+// Inicjalizacja aplikacji
 init(".card");
+
+// Dodawanie listenerów do zmiany informacji na karcie
+const cardFormEl = document.querySelector(".card__form");
+const cardHolderEl = cardFormEl.querySelector(".card__holder");
+const CVCNumbersEl = document.querySelector(".card__CVC-numbers");
+const cardNumbers = document.querySelector(".card__heading--numbers");
+let cardInfoNameEl = document.querySelector(".card__info--name");
+let cardInfoMouthEl = document.querySelector(".card__info--month");
+let cardInfoYearEl = document.querySelector(".card__info--year");
+const cardInputNameEl = cardFormEl.querySelector(".card__input--name");
+const cardInputNumberEl = cardFormEl.querySelector(".card__input--number");
+const cardInputMonthEl = cardFormEl.querySelector(".card__input--month");
+const cardInputCodeEl = cardFormEl.querySelector(".card__input--code");
+const cardInputYearEl = cardFormEl.querySelector(".card__input--year");
+
+cardInputNameEl.addEventListener("input", (e) => {
+	const inputHolderName = e.target.value;
+	cardInfoNameEl.textContent = inputHolderName;
+});
+
+cardInputNumberEl.addEventListener("input", (e) => {
+	const holderNumber = e.target.value;
+	cardNumbers.textContent = holderNumber;
+});
+
+cardInputMonthEl.addEventListener("input", (e) => {
+	const expMonth = e.target.value + "/";
+	console.log(expMonth);
+	cardInfoMouthEl.textContent = expMonth;
+});
+
+cardInputYearEl.addEventListener("input", (e) => {
+	const expYear = e.target.value;
+	console.log(e.target.value);
+	cardInfoYearEl.textContent = expYear;
+});
+
+cardInputCodeEl.addEventListener("input", (e) => {
+	const CVCCode = e.target.value;
+	CVCNumbersEl.textContent = CVCCode;
+});
