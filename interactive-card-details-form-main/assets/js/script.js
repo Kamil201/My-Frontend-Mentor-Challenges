@@ -65,11 +65,11 @@
             const form = createElement("form", { class: "card__form", action: "#" });
 
             form.addEventListener("submit", formValidation);
-            
+
             const cardHolderDiv = createDiv("card__holder", [
                 createLabel("CardholderName", "Cardholder Name"),
                 createInput("text", "card__input card__input--name", "e.g. Jane Appleseed"),
-                createErrorMessage("error", "card__error-message"),
+                createErrorMessage("", "card__error-message"),
             ]);
 
             const cardNumberDiv = createDiv("card__number", [
@@ -80,23 +80,23 @@
 								"e.g. 1234 5678 9123 0000",
 								"19"
 							),
-                            createParagraph("card__error-message", "error"),
+                            createParagraph("card__error-message", ""),
 						]);
 
             const cardDateExpLabel = createLabel("date", "Exp. Date (MM/YY) CVC");
             const cardDateDiv = createDiv("card__date", [
                 createDiv("card__date card__date--exp", [
                     createInput("text", "card__input card__input--month", "MM", "2"),
-                    createErrorMessage("error", "card__error-message"),
+                    createErrorMessage("", "card__error-message"),
                 ]),
                 createDiv("card__date card__date--years", [
                     createInput("text", "card__input card__input--year", "YY", "4"),
-                    createErrorMessage("error", "card__error-message"),
+                    createErrorMessage("", "card__error-message"),
                 ]),
                 createDiv("card__date card__date--code", [
                     createLabel("", "CVC"),
                     createInput("text", "card__input card__input--code", "e.g. 123", "3"),
-                    createErrorMessage("error", "card__error-message"),
+                    createErrorMessage("", "card__error-message"),
                 ]),
             ]);
 
