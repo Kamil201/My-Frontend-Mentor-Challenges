@@ -12,13 +12,12 @@ const createElement = (tagName, attributes = {}, children = []) => {
 };
 
 // Funkcje do tworzenia konkretnych elementów
-const createInput = (type, className, placeholder, maxLength, pattern = "") => {
+const createInput = (type, className, placeholder, maxLength) => {
 	return createElement("input", {
 		type,
 		class: className,
 		placeholder,
 		maxlength: maxLength,
-		pattern: pattern, // Dodajemy pattern do inputa
 	});
 };
 
@@ -42,13 +41,43 @@ const createErrorMessage = (message, className) => {
 	return createParagraph(className, message);
 };
 const toggleErrorClass = (element, isError) => {
-	element.classList.toggle("error", isError);
+	if(element){
+		element.previousElementSibling.classList.toggle("error", isError);
+		element.style.color = isError ? "var(--error-color-input)" : "green";
+		
+	}else{
+		throw new Error("Element not found");
+	}
 };
 
 
-const checkIsAnyFieldEmpty = (e) => {
-	e.preventDefault();
+// const createSuccessMessage = (message, className) => {
+// 	return createParagraph(className, message);
+// };
 
+
+const isValidName = (name) => {
+	return name.trim() !== "";
+};
+
+const isValidNumber = (number) => {
+	return /^\d{4} \d{4} \d{4} \d{4}$/.test(number);
+};
+
+const isValidMonth = (month) => {
+	return /^(0[1-9]|1[0-2])$/.test(month);
+};
+
+const isValidYear = (year) => {
+	return /^\d{4}$/.test(year);
+};
+
+const isValidCode = (code) => {
+	return /^\d{3}$/.test(code);
+};
+
+const checkIsAnyFieldEmpty = () => {
+	
 	const inputs = [
 		cardInputNameEl,
 		cardInputNumberEl,
@@ -70,20 +99,102 @@ const checkIsAnyFieldEmpty = (e) => {
 	} 
 
 };
+
+
+const clearErrorMessages = () => {
+    errorMessage.forEach((error) => {
+		error.innerText = "";
+		toggleErrorClass(error, false);
+    });
+};
+
+
+const displayErrorMessage = (field, message) => {
+	const errorElement = document.querySelector(`.card__error-message--${field}`);
+
+	if (errorElement) {
+		errorElement.innerText = message;
+		toggleErrorClass(errorElement, true);
+	} else {
+		throw new Error(`Error message element not found for field: ${field}`);
+	}
+};
+
+
+const formValidate = (e) => {
+	e.preventDefault();
+
+	const inputName = document.querySelector(".card__input--name").value;
+	const inputNumber = document.querySelector(".card__input--number").value;
+	const inputMonth = document.querySelector(".card__input--month").value;
+	const inputCode = document.querySelector(".card__input--code").value;
+	const inputYear = document.querySelector(".card__input--year").value;
+
+	clearErrorMessages();
+	
+
+	if (!isValidName(inputName)) {
+		displayErrorMessage("name", "Can't be blank!");
+	}
+	if(inputNumber === "") {
+		displayErrorMessage("number", "Can't be blank!");
+		
+	}else if (!isValidNumber(inputNumber)) {
+		displayErrorMessage("number", "Invalid format, numbers only!");
+	} 
+	
+	if (inputMonth === "") {
+		displayErrorMessage("month", "Can't be blank!");
+		
+	}else if (!isValidMonth(inputMonth)) {
+		displayErrorMessage("month", "Invalid month!");
+	}
+
+	if(inputYear === "") {
+		displayErrorMessage("year", "Can't be blank!");
+		
+	}else if (!isValidYear(inputYear)) {
+		displayErrorMessage("year", "Invalid year!");
+	}
+
+	if (inputCode === "") {
+		displayErrorMessage("code", "Can't be blank!");
+		
+	}else if (!isValidCode(inputCode)) {
+		displayErrorMessage("code", "Invalid CVC code!");
+	}
+
+	if (
+		isValidName(inputName) &&
+		isValidNumber(inputNumber) &&
+		isValidMonth(inputMonth) &&
+		isValidYear(inputYear) &&
+		isValidCode(inputCode)
+	) {
+		// Tutaj dodaj kod do obsługi sukcesu, na przykład:
+		const successMessage = createSuccessMessage(
+			"Success!",
+			"card__success-message"
+		);
+		// Dodaj komunikat o sukcesie do DOM
+		document.querySelector(".card__content").appendChild(successMessage);
+	}
+}
+
 	
 
 const renderFormElements = () => {
 	const form = createElement("form", { class: "card__form", action: "#" });
 
-	form.addEventListener("submit", checkIsAnyFieldEmpty);
-
+	
+	
 	const cardHolderDiv = createDiv("card__holder", [
 		createLabel("CardholderName", "Cardholder Name"),
-		createInput("text", "card__input card__input--name", "e.g. Jane Appleseed"),
-		createErrorMessage("", "card__error-message"),
+		createInput("text", "card__input card__input--name", "e.g. Jane Appleseed" ,'20'),
+		createErrorMessage("","card__error-message--name"),
 		
 	]);
-
+	
 	const cardNumberDiv = createDiv("card__number", [
 		createLabel("number", "Card Number"),
 		createInput(
@@ -91,44 +202,50 @@ const renderFormElements = () => {
 			"card__input card__input--number",
 			"e.g. 1234 5678 9123 0000",
 			"19"
-		),
-		createParagraph("card__error-message", ""),
-		createParagraph("card__success-message", ""),
+			),
+			createParagraph("card__error-message--number", ""),
+			createParagraph("card__success-message", ""),
+			
 	]);
-
+	
 	const cardDateExpLabel = createLabel("date", "Exp. Date (MM/YY) CVC");
 	const cardDateDiv = createDiv("card__date", [
 		createDiv("card__date card__date--exp", [
 			createInput("text", "card__input card__input--month", "MM", "2"),
-			createErrorMessage("", "card__error-message"),
+			createErrorMessage("", "card__error-message--month"),
 		
+			
 		]),
 		createDiv("card__date card__date--years", [
 			createInput("text", "card__input card__input--year", "YY", "4"),
-			createErrorMessage("", "card__error-message"),
+			createErrorMessage("", "card__error-message--year"), 
+			
 			
 		]),
 		createDiv("card__date card__date--code", [
 			createLabel("", "CVC"),
 			createInput("text", "card__input card__input--code", "e.g. 123", "3"),
-			createErrorMessage("", "card__error-message"),
-			
+			createErrorMessage("", "card__error-message--code"),
 		]),
 	]);
-
+	
 	const confirmButton = createElement("button", { class: "card__btn" }, [
 		document.createTextNode("Confirm"),
 	]);
-
+	
 	form.append(
 		cardHolderDiv,
 		cardNumberDiv,
 		cardDateExpLabel,
 		cardDateDiv,
 		confirmButton
-	);
+		);
+		
+		// form.addEventListener("submit", checkIsAnyFieldEmpty);
+		form.addEventListener("submit", formValidate);
+		// confirmButton.addEventListener("click", formValidate);
 
-	return form;
+		return form;
 };
 
 const createImageElement = (src, alt, className) => {
@@ -178,11 +295,14 @@ const renderHeaderElements = () => {
 	return header;
 };
 
+
+
 const renderApp = () => {
 	const container = createElement("div", { class: "card__content" }, [
 		renderHeaderElements(),
 		renderFormElements(),
 	]);
+	
 
 	return container;
 };
