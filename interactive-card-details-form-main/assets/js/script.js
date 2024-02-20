@@ -37,24 +37,13 @@ const createParagraph = (className, text) => {
 	]);
 };
 
-const createErrorMessage = (message, className) => {
-	return createParagraph(className, message);
+const createErrorMessage = (tagName, className, text) => {
+	const errorMessage = createElement(tagName, { class: className }, [
+		document.createTextNode(text),
+	]);
+
+	return errorMessage;
 };
-const toggleErrorClass = (element, isError) => {
-	if(element){
-		element.previousElementSibling.classList.toggle("error", isError);
-		element.style.color = isError ? "var(--error-color-input)" : "green";
-		
-	}else{
-		throw new Error("Element not found");
-	}
-};
-
-
-// const createSuccessMessage = (message, className) => {
-// 	return createParagraph(className, message);
-// };
-
 
 const isValidName = (name) => {
 	return name.trim() !== "";
@@ -77,7 +66,6 @@ const isValidCode = (code) => {
 };
 
 const checkIsAnyFieldEmpty = () => {
-	
 	const inputs = [
 		cardInputNameEl,
 		cardInputNumberEl,
@@ -85,116 +73,37 @@ const checkIsAnyFieldEmpty = () => {
 		cardInputCodeEl,
 		cardInputYearEl,
 	];
+	const isAnyInputEmpty = inputs.some((input) => input.value.trim() === "");
 
+	isAnyInputEmpty
+		? (inputs.forEach((input) => input.parentElement.classList.add("error")),
+		  cardErrorMessageName.innerText = "Can't be blank",
+		  cardErrorMessageNumber.innerText = "Can't be blank",
+		  cardErrorMessageMonth.innerText = "Can't be blank",
+		  cardErrorMessageYear.innerText = "Can't be blank",
+		  cardErrorMessageCode.innerText = "Can't be blank")
+		: null;
 	
-	const isBlank = inputs.some((input) => input.value === "");
-
-	if (isBlank) {
-			errorMessage.forEach((error) => {
-			error.innerText = isBlank ? "Can't be blank!" : "";
-			error.style.color = isBlank ? "var(--error-color-input)" : "";
-
-			inputs.forEach((input) => toggleErrorClass(input, isBlank));
-		});
-	} 
-
 };
 
-
-const clearErrorMessages = () => {
-    errorMessage.forEach((error) => {
-		error.innerText = "";
-		toggleErrorClass(error, false);
-    });
-};
-
-
-const displayErrorMessage = (field, message) => {
-	const errorElement = document.querySelector(`.card__error-message--${field}`);
-
-	if (errorElement) {
-		errorElement.innerText = message;
-		toggleErrorClass(errorElement, true);
-	} else {
-		throw new Error(`Error message element not found for field: ${field}`);
-	}
-};
-
-
-const formValidate = (e) => {
-	e.preventDefault();
-
-	const inputName = document.querySelector(".card__input--name").value;
-	const inputNumber = document.querySelector(".card__input--number").value;
-	const inputMonth = document.querySelector(".card__input--month").value;
-	const inputCode = document.querySelector(".card__input--code").value;
-	const inputYear = document.querySelector(".card__input--year").value;
-
-	clearErrorMessages();
-	
-
-	if (!isValidName(inputName)) {
-		displayErrorMessage("name", "Can't be blank!");
-	}
-	if(inputNumber === "") {
-		displayErrorMessage("number", "Can't be blank!");
-		
-	}else if (!isValidNumber(inputNumber)) {
-		displayErrorMessage("number", "Invalid format, numbers only!");
-	} 
-	
-	if (inputMonth === "") {
-		displayErrorMessage("month", "Can't be blank!");
-		
-	}else if (!isValidMonth(inputMonth)) {
-		displayErrorMessage("month", "Invalid month!");
-	}
-
-	if(inputYear === "") {
-		displayErrorMessage("year", "Can't be blank!");
-		
-	}else if (!isValidYear(inputYear)) {
-		displayErrorMessage("year", "Invalid year!");
-	}
-
-	if (inputCode === "") {
-		displayErrorMessage("code", "Can't be blank!");
-		
-	}else if (!isValidCode(inputCode)) {
-		displayErrorMessage("code", "Invalid CVC code!");
-	}
-
-	if (
-		isValidName(inputName) &&
-		isValidNumber(inputNumber) &&
-		isValidMonth(inputMonth) &&
-		isValidYear(inputYear) &&
-		isValidCode(inputCode)
-	) {
-		// Tutaj dodaj kod do obsługi sukcesu, na przykład:
-		const successMessage = createSuccessMessage(
-			"Success!",
-			"card__success-message"
-		);
-		// Dodaj komunikat o sukcesie do DOM
-		document.querySelector(".card__content").appendChild(successMessage);
-	}
+const formSubmit = () => {
+	checkIsAnyFieldEmpty()
 }
-
-	
 
 const renderFormElements = () => {
 	const form = createElement("form", { class: "card__form", action: "#" });
 
-	
-	
 	const cardHolderDiv = createDiv("card__holder", [
 		createLabel("CardholderName", "Cardholder Name"),
-		createInput("text", "card__input card__input--name", "e.g. Jane Appleseed" ,'20'),
-		createErrorMessage("","card__error-message--name"),
-		
+		createInput(
+			"text",
+			"card__input card__input--name",
+			"e.g. Jane Appleseed",
+			"20"
+		),
+		createErrorMessage("p", "card__error-message--name", ""),
 	]);
-	
+
 	const cardNumberDiv = createDiv("card__number", [
 		createLabel("number", "Card Number"),
 		createInput(
@@ -202,50 +111,45 @@ const renderFormElements = () => {
 			"card__input card__input--number",
 			"e.g. 1234 5678 9123 0000",
 			"19"
-			),
-			createParagraph("card__error-message--number", ""),
-			createParagraph("card__success-message", ""),
-			
+		),
+		createParagraph("card__error-message--number", ""),
+		createParagraph("card__success-message", ""),
 	]);
-	
+
 	const cardDateExpLabel = createLabel("date", "Exp. Date (MM/YY) CVC");
 	const cardDateDiv = createDiv("card__date", [
 		createDiv("card__date card__date--exp", [
 			createInput("text", "card__input card__input--month", "MM", "2"),
-			createErrorMessage("", "card__error-message--month"),
-		
-			
+			createErrorMessage("p", "card__error-message--month", ""),
 		]),
 		createDiv("card__date card__date--years", [
 			createInput("text", "card__input card__input--year", "YY", "4"),
-			createErrorMessage("", "card__error-message--year"), 
-			
-			
+			createErrorMessage("p", "card__error-message--year", ""),
 		]),
 		createDiv("card__date card__date--code", [
 			createLabel("", "CVC"),
 			createInput("text", "card__input card__input--code", "e.g. 123", "3"),
-			createErrorMessage("", "card__error-message--code"),
+			createErrorMessage("p", "card__error-message--code", ""),
 		]),
 	]);
-	
+
 	const confirmButton = createElement("button", { class: "card__btn" }, [
 		document.createTextNode("Confirm"),
 	]);
-	
+
 	form.append(
 		cardHolderDiv,
 		cardNumberDiv,
 		cardDateExpLabel,
 		cardDateDiv,
 		confirmButton
-		);
-		
-		// form.addEventListener("submit", checkIsAnyFieldEmpty);
-		form.addEventListener("submit", formValidate);
-		// confirmButton.addEventListener("click", formValidate);
+	);
 
-		return form;
+	// form.addEventListener("submit", checkIsAnyFieldEmpty);
+	form.addEventListener("submit", formSubmit);
+	// confirmButton.addEventListener("click", formValidate);
+
+	return form;
 };
 
 const createImageElement = (src, alt, className) => {
@@ -295,14 +199,11 @@ const renderHeaderElements = () => {
 	return header;
 };
 
-
-
 const renderApp = () => {
 	const container = createElement("div", { class: "card__content" }, [
 		renderHeaderElements(),
 		renderFormElements(),
 	]);
-	
 
 	return container;
 };
@@ -311,8 +212,7 @@ const init = (containerSelector) => {
 	const container = document.querySelector(containerSelector);
 
 	if (!container) {
-		throw new Error(`Container with selector ${containerSelector} not found`)
-	
+		throw new Error(`Container with selector ${containerSelector} not found`);
 	}
 
 	const app = renderApp();
@@ -336,8 +236,24 @@ const cardInputNumberEl = cardFormEl.querySelector(".card__input--number");
 const cardInputMonthEl = cardFormEl.querySelector(".card__input--month");
 const cardInputCodeEl = cardFormEl.querySelector(".card__input--code");
 const cardInputYearEl = cardFormEl.querySelector(".card__input--year");
-const errorMessage = document.querySelectorAll(".card__error-message");
-const successMessage = document.querySelectorAll(".card__success-message");
+
+const cardErrorMessageName = document.querySelector(".card__error-message--name");
+
+const cardErrorMessageNumber = document.querySelector(
+	".card__error-message--number"
+)
+
+const cardErrorMessageMonth = document.querySelector(
+	".card__error-message--month"
+)
+
+const cardErrorMessageYear = document.querySelector(
+	".card__error-message--year"
+)
+
+const cardErrorMessageCode = document.querySelector(
+	".card__error-message--code"
+)
 
 cardInputNameEl.addEventListener("input", (e) => {
 	const inputHolderName = e.target.value;
