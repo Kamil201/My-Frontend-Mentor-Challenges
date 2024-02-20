@@ -77,18 +77,17 @@ const checkIsAnyFieldEmpty = () => {
 
 	isAnyInputEmpty
 		? (inputs.forEach((input) => input.parentElement.classList.add("error")),
-		  cardErrorMessageName.innerText = "Can't be blank",
-		  cardErrorMessageNumber.innerText = "Can't be blank",
-		  cardErrorMessageMonth.innerText = "Can't be blank",
-		  cardErrorMessageYear.innerText = "Can't be blank",
-		  cardErrorMessageCode.innerText = "Can't be blank")
+		  (cardErrorMessageName.innerText = "Can't be blank"),
+		  (cardErrorMessageNumber.innerText = "Can't be blank"),
+		  (cardErrorMessageMonth.innerText = "Can't be blank"),
+		  (cardErrorMessageYear.innerText = "Can't be blank"),
+		  (cardErrorMessageCode.innerText = "Can't be blank"))
 		: null;
-	
 };
 
 const formSubmit = () => {
-	checkIsAnyFieldEmpty()
-}
+	checkIsAnyFieldEmpty();
+};
 
 const renderFormElements = () => {
 	const form = createElement("form", { class: "card__form", action: "#" });
@@ -237,23 +236,64 @@ const cardInputMonthEl = cardFormEl.querySelector(".card__input--month");
 const cardInputCodeEl = cardFormEl.querySelector(".card__input--code");
 const cardInputYearEl = cardFormEl.querySelector(".card__input--year");
 
-const cardErrorMessageName = document.querySelector(".card__error-message--name");
+const cardErrorMessageName = document.querySelector(
+	".card__error-message--name"
+);
 
 const cardErrorMessageNumber = document.querySelector(
 	".card__error-message--number"
-)
+);
 
 const cardErrorMessageMonth = document.querySelector(
 	".card__error-message--month"
-)
+);
 
 const cardErrorMessageYear = document.querySelector(
 	".card__error-message--year"
-)
+);
 
 const cardErrorMessageCode = document.querySelector(
 	".card__error-message--code"
-)
+);
+
+// nasłuchiwanie w momencie wpisywania nieprawidłowych znaków:
+cardInputNumberEl.addEventListener("input", (e) => {
+	const inputHolderNumber = e.target.value;
+	if (!isValidNumber(inputHolderNumber)) {
+		cardInputNumberEl.parentElement.classList.add("error");
+		cardErrorMessageNumber.innerText = "Wrong format, numbers only!";
+	}
+});
+
+// nasłuchiwanie w momencie wpisywania nieprawidłowych znaków:
+cardInputMonthEl.addEventListener("input", (e) => {
+	const inputMonth = e.target.value;
+	if (!isValidNumber(inputMonth)) {
+			cardInputMonthEl.parentElement.classList.add("error");
+			cardErrorMessageMonth.innerText = "Invalid month, numbers only!";
+		}
+
+})
+
+// nasłuchiwanie w momencie wpisywania nieprawidłowych znaków:
+cardInputYearEl.addEventListener('input', (e) =>{
+	const inputYear = e.target.value;
+
+	if(!isValidYear(inputYear)){
+		cardInputYearEl.parentElement.classList.add('error');
+		cardErrorMessageYear.innerText = 'Invalid year, numbers only!';
+	}
+})
+
+// nasłuchiwanie w momencie wpisywania nieprawidłowych znaków:
+cardInputCodeEl.addEventListener("input", (e) => {
+	const codeValue = e.target.value;
+	if(!isValidCode(codeValue)){
+
+		cardInputCodeEl.parentElement.classList.add('error')
+		cardErrorMessageCode.innerText = 'Wrong format, numbers only!';
+	}
+})
 
 cardInputNameEl.addEventListener("input", (e) => {
 	const inputHolderName = e.target.value;
