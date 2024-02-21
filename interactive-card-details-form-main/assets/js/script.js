@@ -17,7 +17,7 @@ const createInput = (type, className, placeholder, maxLength) => {
 		type,
 		class: className,
 		placeholder,
-		maxlength: maxLength,
+		maxLength: maxLength,
 	});
 };
 
@@ -50,19 +50,23 @@ const isValidName = (name) => {
 };
 
 const isValidNumber = (number) => {
-	return /^\d{4} \d{4} \d{4} \d{4}$/.test(number);
+	const regex = /^\d{4} \d{4} \d{4} \d{4}$/
+	return regex.test(number);
 };
 
 const isValidMonth = (month) => {
-	return /^(0[1-9]|1[0-2])$/.test(month);
+	const regex = /^(0[1-9]|1[0-2])$/
+	return regex.test(month);
 };
 
 const isValidYear = (year) => {
-	return /^\d{4}$/.test(year);
+	const regex = /^\d{4}$/;
+	return regex.test(year);
 };
 
 const isValidCode = (code) => {
-	return /^\d{3}$/.test(code);
+	const regex = /^\d{3}$/
+	return regex.test(code);
 };
 
 const checkIsAnyFieldEmpty = () => {
@@ -178,9 +182,9 @@ const renderFormElements = () => {
 		confirmButton
 	);
 
-	// form.addEventListener("submit", checkIsAnyFieldEmpty);
+	
 	form.addEventListener("submit", formSubmit);
-	// confirmButton.addEventListener("click", formValidate);
+	
 
 	return form;
 };
