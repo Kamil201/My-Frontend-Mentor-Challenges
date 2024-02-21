@@ -66,24 +66,58 @@ const isValidCode = (code) => {
 };
 
 const checkIsAnyFieldEmpty = () => {
-	const inputs = [
-		cardInputNameEl,
-		cardInputNumberEl,
-		cardInputMonthEl,
-		cardInputCodeEl,
-		cardInputYearEl,
-	];
-	const isAnyInputEmpty = inputs.some((input) => input.value.trim() === "");
 
-	isAnyInputEmpty
-		? (inputs.forEach((input) => input.parentElement.classList.add("error")),
-		  (cardErrorMessageName.innerText = "Can't be blank"),
-		  (cardErrorMessageNumber.innerText = "Can't be blank"),
-		  (cardErrorMessageMonth.innerText = "Can't be blank"),
-		  (cardErrorMessageYear.innerText = "Can't be blank"),
-		  (cardErrorMessageCode.innerText = "Can't be blank"))
-		: null;
-};
+	const inputs = [
+		{
+			inputField: cardInputNameEl,
+			message: cardErrorMessageName,
+			text: "Can't be blank",
+		},
+		{
+			inputField: cardInputNumberEl,
+			message: cardErrorMessageNumber,
+			text: "Can't be blank",
+		},
+		{
+			inputField: cardInputMonthEl,
+			message: cardErrorMessageMonth,
+			text: "Can't be blank",
+		},
+		{
+			inputField: cardInputCodeEl,
+			message: cardErrorMessageCode,
+			text: "Can't be blank",
+		},
+		{
+			inputField: cardInputYearEl,
+			message: cardErrorMessageYear,
+			text: "Can't be blank",
+		},
+	];
+
+	const isAnyInputEmpty = inputs.some(
+		({ inputField }) => inputField.value.trim() === ""
+	);
+
+	inputs.forEach(({ inputField, message, text }) => {
+		isAnyInputEmpty
+			? (inputField.parentElement.classList.add("error"),
+			  (message.innerText = text))
+			: (inputField.parentElement.classList.remove("error"),
+			  inputField.parentElement.classList.add("success"),
+			  (message.innerText = ""));
+	});
+
+	if (!isAnyInputEmpty){
+		const successMessage = createParagraph(
+			"card__success-message",
+			"Form submitted successfully!"
+		);
+		successMessage.style.color = "green";
+		cardFormEl.appendChild(successMessage);
+	}
+}
+
 
 const formSubmit = () => {
 	checkIsAnyFieldEmpty();
