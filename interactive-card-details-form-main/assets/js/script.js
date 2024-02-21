@@ -50,22 +50,26 @@ const isValidName = (name) => {
 };
 
 const isValidNumber = (number) => {
-	const regex = /^\d{4} \d{4} \d{4} \d{4}$/
+	// const regex = /^\d{4} \d{4} \d{4} \d{4}$/
+	const regex = /^\d+$/;
 	return regex.test(number);
 };
 
 const isValidMonth = (month) => {
-	const regex = /^(0[1-9]|1[0-2])$/
+	// const regex = /^(0[1-9]|1[0-2])$/
+	const regex = /^\d+$/;
 	return regex.test(month);
 };
 
 const isValidYear = (year) => {
-	const regex = /^\d{4}$/;
+	// const regex = /^\d{4}$/;
+	const regex = /^\d+$/;
 	return regex.test(year);
 };
 
 const isValidCode = (code) => {
-	const regex = /^\d{3}$/
+	// const regex = /^\d{3}$/
+	const regex = /^\d+$/
 	return regex.test(code);
 };
 
@@ -121,7 +125,6 @@ const checkIsAnyFieldEmpty = () => {
 		cardFormEl.appendChild(successMessage);
 	}
 }
-
 
 const formSubmit = () => {
 	checkIsAnyFieldEmpty();
@@ -236,12 +239,43 @@ const renderHeaderElements = () => {
 	return header;
 };
 
+const createPopup = () => {
+	const popup = createElement("div", { class: "card__pop-up" }, [
+		createElement("img", {
+			src: "./assets/images/icon-complete.svg",
+			alt: "icon-complete",
+			class: "card__pop-up--icon",
+		}),
+		createElement("p", { class: "card__pop-up card__pop-up--message" }, [
+			createElement("span", { class: "card__pop-up card__pop-up--thank-you" }, [
+				document.createTextNode("Thank you!"),
+			]),
+			createBreakElement(),
+			document.createTextNode("We've added your card details"),
+		]),
+		createElement("button", { class: "card__pop-up card__pop-up--btn" }, [
+			document.createTextNode("Continue"),
+		]),
+	]);
+
+	return popup;
+};
+
+const createBreakElement = () => {
+	return createElement("br");
+};
+
+
+document.body.appendChild(createPopup());
+
+
 const renderApp = () => {
 	const container = createElement("div", { class: "card__content" }, [
 		renderHeaderElements(),
 		renderFormElements(),
 	]);
-
+	// Dodawanie popupa do aplikacji
+	createPopup();
 	return container;
 };
 
