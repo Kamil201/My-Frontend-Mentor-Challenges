@@ -117,17 +117,30 @@ const checkIsAnyFieldEmpty = () => {
 	});
 
 	if (!isAnyInputEmpty){
-		const successMessage = createParagraph(
-			"card__success-message",
-			"Form submitted successfully!"
-		);
-		successMessage.style.color = "green";
-		cardFormEl.appendChild(successMessage);
+		// const successMessage = createParagraph(
+		// 	"card__success-message",
+		// 	"Form submitted successfully!"
+		// );
+
+		
+		const popupMessage = document.querySelector(".card__pop-up--message");
+		const popupEl = document.querySelector(".card__pop-up");
+		const cardEl = document.querySelector(".card");
+
+		cardEl.style.display = "none";
+
+		// // Przenieś istniejący element z treścią do popupa
+		// popupEl.innerHTML = ""; // Usuń wszystko z popupa
+		popupEl.style.display = "flex";
+		popupEl.append(popupMessage);
+
 	}
 }
 
 const formSubmit = () => {
 	checkIsAnyFieldEmpty();
+	
+
 };
 
 const renderFormElements = () => {
@@ -261,12 +274,27 @@ const createPopup = () => {
 	return popup;
 };
 
+
+const createPopupMessage = () => {
+	return createElement("p", { class: "card__pop-up--message" }, [
+		createElement("span", { class: "card__pop-up--thank-you" }, [
+			document.createTextNode("Thank you!"),
+		]),
+		createBreakElement(),
+		document.createTextNode("We've added your card details"),
+	]);
+
+};
+	const createPopupBtn =() => {
+		return createElement("button", { class: "card__pop-up--btn" }, [
+		document.createTextNode("Continue"),
+	]);
+}
 const createBreakElement = () => {
 	return createElement("br");
 };
 
 
-document.body.appendChild(createPopup());
 
 
 const renderApp = () => {
@@ -274,20 +302,21 @@ const renderApp = () => {
 		renderHeaderElements(),
 		renderFormElements(),
 	]);
+	createPopup()
+	createPopupMessage()
 	// Dodawanie popupa do aplikacji
-	createPopup();
 	return container;
 };
 
 const init = (containerSelector) => {
 	const container = document.querySelector(containerSelector);
-
+	
 	if (!container) {
 		throw new Error(`Container with selector ${containerSelector} not found`);
 	}
 
 	const app = renderApp();
-
+	
 	container.appendChild(app);
 };
 
@@ -308,30 +337,36 @@ const cardInputMonthEl = cardFormEl.querySelector(".card__input--month");
 const cardInputCodeEl = cardFormEl.querySelector(".card__input--code");
 const cardInputYearEl = cardFormEl.querySelector(".card__input--year");
 
+const popupEl = document.querySelector(".card__pop-up");
+const cardEl = document.querySelector(".card");
+
+		
+
+
 const cardErrorMessageName = document.querySelector(
 	".card__error-message--name"
-);
-
-const cardErrorMessageNumber = document.querySelector(
-	".card__error-message--number"
-);
-
-const cardErrorMessageMonth = document.querySelector(
-	".card__error-message--month"
-);
-
-const cardErrorMessageYear = document.querySelector(
-	".card__error-message--year"
+	);
+	
+	const cardErrorMessageNumber = document.querySelector(
+		".card__error-message--number"
+		);
+		
+		const cardErrorMessageMonth = document.querySelector(
+			".card__error-message--month"
+			);
+			
+			const cardErrorMessageYear = document.querySelector(
+				".card__error-message--year"
 );
 
 const cardErrorMessageCode = document.querySelector(
 	".card__error-message--code"
-);
-
-// nasłuchiwanie w momencie wpisywania nieprawidłowych znaków:
-cardInputNumberEl.addEventListener("input", (e) => {
-	const inputHolderNumber = e.target.value;
-	if (!isValidNumber(inputHolderNumber)) {
+	);
+	
+	// nasłuchiwanie w momencie wpisywania nieprawidłowych znaków:
+	cardInputNumberEl.addEventListener("input", (e) => {
+		const inputHolderNumber = e.target.value;
+		if (!isValidNumber(inputHolderNumber)) {
 		cardInputNumberEl.parentElement.classList.add("error");
 		cardErrorMessageNumber.innerText = "Wrong format, numbers only!";
 	}
@@ -341,8 +376,8 @@ cardInputNumberEl.addEventListener("input", (e) => {
 cardInputMonthEl.addEventListener("input", (e) => {
 	const inputMonth = e.target.value;
 	if (!isValidNumber(inputMonth)) {
-			cardInputMonthEl.parentElement.classList.add("error");
-			cardErrorMessageMonth.innerText = "Invalid month, numbers only!";
+		cardInputMonthEl.parentElement.classList.add("error");
+		cardErrorMessageMonth.innerText = "Invalid month, numbers only!";
 		}
 
 })
@@ -361,7 +396,7 @@ cardInputYearEl.addEventListener('input', (e) =>{
 cardInputCodeEl.addEventListener("input", (e) => {
 	const codeValue = e.target.value;
 	if(!isValidCode(codeValue)){
-
+		
 		cardInputCodeEl.parentElement.classList.add('error')
 		cardErrorMessageCode.innerText = 'Wrong format, numbers only!';
 	}
@@ -393,3 +428,5 @@ cardInputCodeEl.addEventListener("input", (e) => {
 	const CVCCode = e.target.value;
 	CVCNumbersEl.textContent = CVCCode;
 });
+document.body.appendChild(createPopup());
+
