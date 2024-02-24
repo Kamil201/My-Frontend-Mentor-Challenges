@@ -49,7 +49,6 @@ const isValidName = (name) => {
 };
 
 const isValidNumber = (number) => {
-	
 	const regex = /^\d+$/;
 	return regex.test(number);
 };
@@ -65,14 +64,11 @@ const isValidYear = (year) => {
 };
 
 const isValidCode = (code) => {
-	const regex = /^\d+$/
+	const regex = /^\d+$/;
 	return regex.test(code);
 };
 
-
-
 const checkIsAnyFieldEmpty = () => {
-
 	const inputs = [
 		{
 			inputField: cardInputNameEl,
@@ -114,23 +110,25 @@ const checkIsAnyFieldEmpty = () => {
 			  (message.innerText = ""));
 	});
 
-	if (!isAnyInputEmpty){
-			// Update popup content dynamically
+	if (!isAnyInputEmpty) {
+		// Update popup content dynamically
 		const popupMessage = popupEl.querySelector(".card__pop-up--message");
 
-		popupMessage.innerHTML = '';
+		popupMessage.innerHTML = "";
 
-		const thankYouSpan = createElement("span", { class: "card__pop-up--thank-you" }, [
-			document.createTextNode("Thank you!"),
-		]);
+		const thankYouSpan = createElement(
+			"span",
+			{ class: "card__pop-up--thank-you" },
+			[document.createTextNode("Thank you!")]
+		);
 		const infoParagraph = createElement("p", { class: "card__pop-up--info" }, [
 			document.createTextNode("We've added your card details"),
 		]);
 
 		const infoButton = createElement("button", { class: "card__pop-up--btn" }, [
 			document.createTextNode("Continue"),
-		])
-		
+		]);
+
 		popupMessage.append(thankYouSpan, infoParagraph, infoButton);
 
 		// Show the popup
@@ -147,14 +145,11 @@ const checkIsAnyFieldEmpty = () => {
 			popupEl.style.display = "none";
 			cardEl.style.display = "block";
 		});
-
 	}
-}
-
+};
 
 const formSubmit = () => {
 	checkIsAnyFieldEmpty();
-
 };
 
 const renderFormElements = () => {
@@ -212,9 +207,7 @@ const renderFormElements = () => {
 		confirmButton
 	);
 
-	
 	form.addEventListener("submit", formSubmit);
-	
 
 	return form;
 };
@@ -298,10 +291,7 @@ document.body.appendChild(popupElm);
 // 		createBreakElement(),
 // 	]);
 
-
-
 // };
-
 
 // const confirmButton = createElement("button", { class: "card__btn" }, [
 // 	document.createTextNode("Confirm"),
@@ -323,13 +313,13 @@ const renderApp = () => {
 
 const init = (containerSelector) => {
 	const container = document.querySelector(containerSelector);
-	
+
 	if (!container) {
 		throw new Error(`Container with selector ${containerSelector} not found`);
 	}
 
 	const app = renderApp();
-	
+
 	container.appendChild(app);
 };
 
@@ -353,92 +343,117 @@ const cardInputYearEl = cardFormEl.querySelector(".card__input--year");
 const popupEl = document.querySelector(".card__pop-up");
 const cardEl = document.querySelector(".card");
 
-		
-
-
 const cardErrorMessageName = document.querySelector(
 	".card__error-message--name"
-	);
-	
-	const cardErrorMessageNumber = document.querySelector(
-		".card__error-message--number"
-		);
-		
-		const cardErrorMessageMonth = document.querySelector(
-			".card__error-message--month"
-			);
-			
-			const cardErrorMessageYear = document.querySelector(
-				".card__error-message--year"
+);
+
+const cardErrorMessageNumber = document.querySelector(
+	".card__error-message--number"
+);
+
+const cardErrorMessageMonth = document.querySelector(
+	".card__error-message--month"
+);
+
+const cardErrorMessageYear = document.querySelector(
+	".card__error-message--year"
 );
 
 const cardErrorMessageCode = document.querySelector(
 	".card__error-message--code"
-	);
-	
-	// nasłuchiwanie w momencie wpisywania nieprawidłowych znaków:
-	cardInputNumberEl.addEventListener("input", (e) => {
-		const inputHolderNumber = e.target.value;
-		if (!isValidNumber(inputHolderNumber)) {
-		cardInputNumberEl.parentElement.classList.add("error");
-		cardErrorMessageNumber.innerText = "Wrong format, numbers only!";
-	}
-});
+);
 
-// nasłuchiwanie w momencie wpisywania nieprawidłowych znaków:
-cardInputMonthEl.addEventListener("input", (e) => {
-	const inputMonth = e.target.value;
-	if (!isValidNumber(inputMonth)) {
-		cardInputMonthEl.parentElement.classList.add("error");
-		cardErrorMessageMonth.innerText = "Invalid month, numbers only!";
+function handleInputValidation(
+	inputElement,
+	errorElement,
+	isValidFunction,
+	errorMessage,
+	updateCardInfoFunction = null
+) {
+	const inputValue = inputElement.value;
+
+	if (!isValidFunction(inputValue)) {
+		inputElement.parentElement.classList.add("error");
+		errorElement.innerText = errorMessage;
+	} else {
+		inputElement.parentElement.classList.remove("error");
+		errorElement.innerText = "";
+
+		if (updateCardInfoFunction) {
+			updateCardInfoFunction(inputElement);
 		}
-
-})
-
-// nasłuchiwanie w momencie wpisywania nieprawidłowych znaków:
-cardInputYearEl.addEventListener('input', (e) =>{
-	const inputYear = e.target.value;
-
-	if(!isValidYear(inputYear)){
-		cardInputYearEl.parentElement.classList.add('error');
-		cardErrorMessageYear.innerText = 'Invalid year, numbers only!';
 	}
-})
+}
 
-// nasłuchiwanie w momencie wpisywania nieprawidłowych znaków:
-cardInputCodeEl.addEventListener("input", (e) => {
-	const codeValue = e.target.value;
-	if(!isValidCode(codeValue)){
-		
-		cardInputCodeEl.parentElement.classList.add('error')
-		cardErrorMessageCode.innerText = 'Wrong format, numbers only!';
-	}
-})
-
-cardInputNameEl.addEventListener("input", (e) => {
+function handleCardNameInput(e) {
 	const inputHolderName = e.target.value;
 	cardInfoNameEl.textContent = inputHolderName;
-});
+}
 
-cardInputNumberEl.addEventListener("input", (e) => {
-	const holderNumber = e.target.value;
+function handleCardNumberInput(e) {
+	handleInputValidation(
+		e.target,
+		cardErrorMessageNumber,
+		isValidNumber,
+		"Wrong format, numbers only!",
+		handleCardNumberUpdate
+	);
+}
+
+function handleCardNumberUpdate(inputElement) {
+	const holderNumber = inputElement.value;
 	cardNumbers.textContent = holderNumber;
-});
+}
 
-cardInputMonthEl.addEventListener("input", (e) => {
-	const expMonth = e.target.value + "/";
+function handleCardMonthInput(e) {
+	handleInputValidation(
+		e.target,
+		cardErrorMessageMonth,
+		isValidNumber,
+		"Invalid month, numbers only!",
+		handleCardMonthUpdate
+	);
+}
+
+function handleCardMonthUpdate(inputElement) {
+	const expMonth = inputElement.value + "/";
 	console.log(expMonth);
 	cardInfoMouthEl.textContent = expMonth;
-});
+}
 
-cardInputYearEl.addEventListener("input", (e) => {
-	const expYear = e.target.value;
-	console.log(e.target.value);
+function handleCardYearInput(e) {
+	handleInputValidation(
+		e.target,
+		cardErrorMessageYear,
+		isValidYear,
+		"Invalid year, numbers only!",
+		handleCardYearUpdate
+	);
+}
+
+function handleCardYearUpdate(inputElement) {
+	const expYear = inputElement.value;
+	console.log(inputElement.value);
 	cardInfoYearEl.textContent = expYear;
-});
+}
 
-cardInputCodeEl.addEventListener("input", (e) => {
-	const CVCCode = e.target.value;
+function handleCardCodeInput(e) {
+	handleInputValidation(
+		e.target,
+		cardErrorMessageCode,
+		isValidCode,
+		"Wrong format, numbers only!",
+		handleCardCodeUpdate
+	);
+}
+
+function handleCardCodeUpdate(inputElement) {
+	const CVCCode = inputElement.value;
 	CVCNumbersEl.textContent = CVCCode;
-});
+}
 
+cardInputNumberEl.addEventListener("input", handleCardNumberInput);
+cardInputMonthEl.addEventListener("input", handleCardMonthInput);
+cardInputYearEl.addEventListener("input", handleCardYearInput);
+cardInputCodeEl.addEventListener("input", handleCardCodeInput);
+cardInputNameEl.addEventListener("input", handleCardNameInput);
