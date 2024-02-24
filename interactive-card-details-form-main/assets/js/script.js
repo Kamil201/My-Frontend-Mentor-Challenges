@@ -1,4 +1,3 @@
-// Funkcja pomocnicza do tworzenia elementu z atrybutami i dziećmi
 const createElement = (tagName, attributes = {}, children = []) => {
 	const element = document.createElement(tagName);
 
@@ -11,7 +10,6 @@ const createElement = (tagName, attributes = {}, children = []) => {
 	return element;
 };
 
-// Funkcje do tworzenia konkretnych elementów
 const createInput = (type, className, placeholder, maxLength) => {
 	return createElement("input", {
 		type,
@@ -34,6 +32,7 @@ const createDiv = (className, children = []) => {
 const createParagraph = (className, text) => {
 	return createElement("p", { class: className }, [
 		document.createTextNode(text),
+		document.createTextNode(text),
 	]);
 };
 
@@ -50,28 +49,27 @@ const isValidName = (name) => {
 };
 
 const isValidNumber = (number) => {
-	// const regex = /^\d{4} \d{4} \d{4} \d{4}$/
+	
 	const regex = /^\d+$/;
 	return regex.test(number);
 };
 
 const isValidMonth = (month) => {
-	// const regex = /^(0[1-9]|1[0-2])$/
 	const regex = /^\d+$/;
 	return regex.test(month);
 };
 
 const isValidYear = (year) => {
-	// const regex = /^\d{4}$/;
 	const regex = /^\d+$/;
 	return regex.test(year);
 };
 
 const isValidCode = (code) => {
-	// const regex = /^\d{3}$/
 	const regex = /^\d+$/
 	return regex.test(code);
 };
+
+
 
 const checkIsAnyFieldEmpty = () => {
 
@@ -117,29 +115,45 @@ const checkIsAnyFieldEmpty = () => {
 	});
 
 	if (!isAnyInputEmpty){
-		// const successMessage = createParagraph(
-		// 	"card__success-message",
-		// 	"Form submitted successfully!"
-		// );
+			// Update popup content dynamically
+		const popupMessage = popupEl.querySelector(".card__pop-up--message");
 
+		popupMessage.innerHTML = '';
+
+		const thankYouSpan = createElement("span", { class: "card__pop-up--thank-you" }, [
+			document.createTextNode("Thank you!"),
+		]);
+		const infoParagraph = createElement("p", { class: "card__pop-up--info" }, [
+			document.createTextNode("We've added your card details"),
+		]);
+
+		const infoButton = createElement("button", { class: "card__pop-up--btn" }, [
+			document.createTextNode("Continue"),
+		])
 		
-		const popupMessage = document.querySelector(".card__pop-up--message");
-		const popupEl = document.querySelector(".card__pop-up");
-		const cardEl = document.querySelector(".card");
+		popupMessage.append(thankYouSpan, infoParagraph, infoButton);
 
+		// Show the popup
+		popupEl.append(thankYouSpan, infoParagraph, infoButton);
+		popupEl.style.display = "block";
 		cardEl.style.display = "none";
 
-		// // Przenieś istniejący element z treścią do popupa
-		// popupEl.innerHTML = ""; // Usuń wszystko z popupa
-		popupEl.style.display = "flex";
-		popupEl.append(popupMessage);
+		const continueBtn = document.querySelector(".card__pop-up--btn");
+
+		if (!infoButton) {
+			throw new Error("Continue button not found");
+		}
+		infoButton.addEventListener("click", () => {
+			popupEl.style.display = "none";
+			cardEl.style.display = "block";
+		});
 
 	}
 }
 
+
 const formSubmit = () => {
 	checkIsAnyFieldEmpty();
-	
 
 };
 
@@ -263,8 +277,6 @@ const createPopup = () => {
 			createElement("span", { class: "card__pop-up card__pop-up--thank-you" }, [
 				document.createTextNode("Thank you!"),
 			]),
-			createBreakElement(),
-			document.createTextNode("We've added your card details"),
 		]),
 		createElement("button", { class: "card__pop-up card__pop-up--btn" }, [
 			document.createTextNode("Continue"),
@@ -274,37 +286,38 @@ const createPopup = () => {
 	return popup;
 };
 
+const popupElm = createPopup();
+document.body.appendChild(popupElm);
 
-const createPopupMessage = () => {
-	return createElement("p", { class: "card__pop-up--message" }, [
-		createElement("span", { class: "card__pop-up--thank-you" }, [
-			document.createTextNode("Thank you!"),
-		]),
-		createBreakElement(),
-		document.createTextNode("We've added your card details"),
-	]);
-
-};
-	const createPopupBtn =() => {
-		return createElement("button", { class: "card__pop-up--btn" }, [
-		document.createTextNode("Continue"),
-	]);
-}
-const createBreakElement = () => {
-	return createElement("br");
-};
+// const createPopupMessage = () => {
+// 	return createElement("p", { class: "card__pop-up--message" }, [
+// 		createElement("span", { class: "card__pop-up--thank-you" }, [
+// 			document.createTextNode("Thank you!"),
+// 			document.createTextNode("We've added your card details"),
+// 		]),
+// 		createBreakElement(),
+// 	]);
 
 
 
+// };
+
+
+// const confirmButton = createElement("button", { class: "card__btn" }, [
+// 	document.createTextNode("Confirm"),
+// ]);
+
+// const createBreakElement = () => {
+// 	return createElement("br");
+// };
 
 const renderApp = () => {
 	const container = createElement("div", { class: "card__content" }, [
 		renderHeaderElements(),
 		renderFormElements(),
+		// createPopup()
 	]);
-	createPopup()
-	createPopupMessage()
-	// Dodawanie popupa do aplikacji
+
 	return container;
 };
 
@@ -428,5 +441,4 @@ cardInputCodeEl.addEventListener("input", (e) => {
 	const CVCCode = e.target.value;
 	CVCNumbersEl.textContent = CVCCode;
 });
-document.body.appendChild(createPopup());
 
