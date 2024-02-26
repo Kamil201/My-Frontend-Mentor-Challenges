@@ -139,7 +139,7 @@ const checkIsAnyFieldEmpty = () => {
 		const continueBtn = document.querySelector(".card__pop-up--btn");
 
 		if (!infoButton) {
-			throw new Error("Continue button not found");
+			console.error("Continue button not found");
 		}
 		infoButton.addEventListener("click", () => {
 			popupEl.style.display = "none";
@@ -282,30 +282,10 @@ const createPopup = () => {
 const popupElm = createPopup();
 document.body.appendChild(popupElm);
 
-// const createPopupMessage = () => {
-// 	return createElement("p", { class: "card__pop-up--message" }, [
-// 		createElement("span", { class: "card__pop-up--thank-you" }, [
-// 			document.createTextNode("Thank you!"),
-// 			document.createTextNode("We've added your card details"),
-// 		]),
-// 		createBreakElement(),
-// 	]);
-
-// };
-
-// const confirmButton = createElement("button", { class: "card__btn" }, [
-// 	document.createTextNode("Confirm"),
-// ]);
-
-// const createBreakElement = () => {
-// 	return createElement("br");
-// };
-
 const renderApp = () => {
 	const container = createElement("div", { class: "card__content" }, [
 		renderHeaderElements(),
 		renderFormElements(),
-		// createPopup()
 	]);
 
 	return container;
@@ -315,7 +295,7 @@ const init = (containerSelector) => {
 	const container = document.querySelector(containerSelector);
 
 	if (!container) {
-		throw new Error(`Container with selector ${containerSelector} not found`);
+		console.error(`Container with selector ${containerSelector} not found`);
 	}
 
 	const app = renderApp();
