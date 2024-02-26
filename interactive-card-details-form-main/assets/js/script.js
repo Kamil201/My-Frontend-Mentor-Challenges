@@ -363,6 +363,11 @@ const cardErrorMessageCode = document.querySelector(
 	".card__error-message--code"
 );
 
+function isValidNameFormat(value) {
+	const regex = /^[a-zA-Z\s]+$/
+	return regex.test(value);
+}
+
 function handleInputValidation(
 	inputElement,
 	errorElement,
@@ -386,8 +391,18 @@ function handleInputValidation(
 }
 
 function handleCardNameInput(e) {
-	const inputHolderName = e.target.value;
-	cardInfoNameEl.textContent = inputHolderName;
+	 handleInputValidation(
+			e.target,
+			cardErrorMessageName,
+			isValidNameFormat,
+			"Wrong format, letters only!",
+			handleCardNameUpdate
+		);
+}
+
+function handleCardNameUpdate(inputElement) {
+	const cardHolderName = inputElement.value;
+	cardInfoNameEl.textContent = cardHolderName;
 }
 
 function handleCardNumberInput(e) {

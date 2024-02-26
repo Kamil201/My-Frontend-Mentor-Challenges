@@ -92,14 +92,24 @@ cursor:pointer;
 
 body{
   font-family: 'Space Grotesk', sans-serif;
+  /* min-height: 100vh; */
+  /* min-width:100vw; */
     /* overflow-x: hidden; */
 }
-
+.card__error-message {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    color: var(--error-color-input);
+    font-size: 12px;
+    margin-top: 4px;
+}
 .card{
     max-width: 1200px;
     width:100%;
     height:auto;
     position:relative;
+   /* overflow: hidden; */
 }
 
 header{
@@ -128,13 +138,23 @@ z-index: 1;
 }
 
 .card__form{
-    /* display: none;  */
     margin-top:4rem;
     padding:2rem;
     background-color: var(--White);
 }
 
-/* .card__holder.success .card__input--name,
+.success{
+   border-color: rgb(28, 203, 28);
+  
+}
+
+.error{
+    color: red;
+}
+
+
+
+.card__holder.success .card__input--name,
 .card__number.success .card__input--number,
 .card__date.success .card__input--month,
 .card__date.success .card__input--year,
@@ -151,15 +171,7 @@ z-index: 1;
   border-color: var(--error-color-input);
   background-color:rgba(255, 0, 0, .2);
   
-}
-.card__holder.error .card__error-message,
-.card__number.error .card__error-message,
-.card__date.error .card__error-message,
-.card__date.error .card__error-message,
-.card__date.error .card__error-message{
- visibility: visible;
-  
-} */
+} 
 
 
 .card__info{
@@ -218,8 +230,10 @@ color: var(--White);
 
 .card__date{
     display:flex;
+    justify-content: space-between;
     gap:20px;
 }
+
 
 .card__input--year{
     width:70px;
@@ -239,32 +253,31 @@ color: var(--White);
 }
 
 .card__pop-up{
-    display:flex;
+    margin: 3rem;
+    display:none; 
+    padding:2rem;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+
 }
 
 .card__pop-up--icon{
-    margin-top: 4rem;
+    margin: 3rem;
 }
 
 .card__pop-up--thank-you{
+text-align: center;
+    color:var(--Very-dark-violet);
     font-size: 25px;
     letter-spacing: 3px;
     text-transform: uppercase;
 }
-/* 
+ 
 .card__pop-up--message{
     color:var(--Light-grayish-violet);
     font-weight: 500;
-} */
-
-
-.card__pop-up{
-    display:none;
-    margin-top: 1rem;
-}
+} 
 
 .card__pop-up--btn{
     background-color: var(--Very-dark-violet);
@@ -273,5 +286,6 @@ color: var(--White);
     border-radius: 1rem;
     cursor:pointer;
     margin-top: 1rem;
+    cursor:pointer;
     
 }
